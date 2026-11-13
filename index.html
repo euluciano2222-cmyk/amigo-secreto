@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amigo Secreto</title>
+<link rel="stylesheet" href="style.css"
+<script src="script.js" defer> </script>
+
+</head>
+<body>
+    
+    <div class="wrap>"
+        <main id="view-setup">
+            <header>
+<p class="eyebrow">Natal em Família</p>
+<h1>Amigo Secreto</h1>
+<p class="sub">Cadastre o grupo, sorteie e mande um link secreto para cada pessoa.</p>
+            </header>
+
+            <section class="card">
+<label for="group">Nome do grupo</label>
+<input id="group" maxlength="40" placeholder="Ex.:Família Silva">
+ </section>
+
+<section class="card">
+    <h2>Participantes</h2>
+    <form id="add-form">
+        <label for="p-name">Nome</label>
+        <input id="p-name" maxlength="30" placeholder="Ex.: Luciana">
+        <label for="p-phone">WhatsApp com DDD (opcional)</label>
+        <input id="p-phone" inputmode="tel" aria-placeholder="Ex.: 11 91234-555">
+        <buton type="submit">Adicionar</buton>
+</form>
+<p id="add-msg" role="alert"></p>
+<ul id="people"></ul>
+</section>
+
+        <buton id="draw" disable>Sortear</buton>
+    </main>
+</div>     
+            
+</body>
+</html>
