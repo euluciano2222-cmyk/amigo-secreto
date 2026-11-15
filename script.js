@@ -122,7 +122,7 @@ if (typeof document !== "undefined") (function () {
       const abrir = box.hidden;
       box.hidden = !abrir;
       box.classList.toggle("show", abrir);
-      btn.textContent = abrir ? "Esconder" : "Abrir o presente";
+      btn.textContent = abrir ? "Esconder" : "Ver quem eu tirei";
     };
     show("view-reveal");
   }

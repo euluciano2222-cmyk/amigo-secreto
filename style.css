@@ -301,6 +301,10 @@ ul {
     padding: 28px 20px;
 }
 
+.reveal .muted {
+    margin: 16px 0 0;
+}
+
 .gift {
     font-size: 72px;
     line-height: 1;
