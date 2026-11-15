@@ -1,0 +1,398 @@
+/* ===== Paleta de Natal ===== */
+:root {
+    --verde: #0f3d2e;
+    --verde-escuro: #08261c;
+    --vermelho: #c0392b;
+    --vermelho-escuro: #962d22;
+    --dourado: #e6b84c;
+    --creme: #fff8ec;
+    --linha: #e8dcc6;
+    --texto: #2b2b2b;
+    --apagado: #6d6a63;
+    --whatsapp: #128c4b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* O atributo hidden precisa vencer qualquer display que a gente definir */
+[hidden] {
+    display: none !important;
+}
+
+/* Cor de fundo de segurança, caso o degradê não cubra a página toda */
+html {
+    background: var(--verde-escuro);
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Nunito", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--texto);
+    background: radial-gradient(circle at top, var(--verde), var(--verde-escuro)) fixed;
+}
+
+.wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 32px 16px 64px;
+}
+
+/* ===== Cabeçalho ===== */
+header {
+    text-align: center;
+    color: var(--creme);
+    margin-bottom: 24px;
+}
+
+.eyebrow {
+    margin: 0;
+    color: var(--dourado);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.eyebrow.dark {
+    color: var(--vermelho);
+}
+
+h1 {
+    font-family: "Mountains of Christmas", Georgia, serif;
+    font-size: clamp(44px, 13vw, 60px);
+    line-height: 1;
+    margin: 8px 0;
+    overflow-wrap: anywhere;
+}
+
+h2 {
+    font-family: "Mountains of Christmas", Georgia, serif;
+    font-size: 30px;
+    line-height: 1.1;
+    margin: 0 0 4px;
+    color: var(--verde);
+}
+
+p {
+    margin: 0 0 12px;
+}
+
+.sub {
+    opacity: 0.9;
+}
+
+.muted {
+    color: var(--apagado);
+    font-size: 14px;
+}
+
+/* ===== Cartões ===== */
+.card {
+    background: var(--creme);
+    border-radius: 16px;
+    border-top: 5px solid var(--vermelho);
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.card h1 {
+    color: var(--verde);
+}
+
+/* ===== Formulário ===== */
+label {
+    display: block;
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.hint {
+    font-weight: 400;
+    color: var(--apagado);
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    font: inherit;
+    color: inherit;
+    background: #fff;
+    border: 1px solid var(--linha);
+    border-radius: 10px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.row input {
+    margin-bottom: 0;
+}
+
+/* Contorno visível para quem navega pelo teclado */
+input:focus-visible,
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid var(--dourado);
+    outline-offset: 2px;
+}
+
+/* ===== Botões ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 16px;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.primary {
+    width: 100%;
+    font-size: 18px;
+    background: var(--vermelho);
+    color: var(--creme);
+    box-shadow: 0 4px 0 var(--vermelho-escuro);
+}
+
+.primary:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.outline {
+    width: 100%;
+    background: transparent;
+    color: var(--verde);
+    border: 2px solid var(--verde);
+}
+
+.whats {
+    background: var(--whatsapp);
+    color: #fff;
+}
+
+.danger {
+    width: 100%;
+    background: transparent;
+    color: var(--creme);
+    border: 1px solid var(--creme);
+}
+
+.small {
+    min-height: 42px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+/* ===== Mensagens ===== */
+.msg {
+    min-height: 20px;
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: var(--vermelho);
+}
+
+.msg.on-dark {
+    color: #ffd9a8;
+    text-align: center;
+}
+
+.warn {
+    background: #fdf1d6;
+    border: 1px solid var(--dourado);
+    color: #5a4310;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+/* ===== Listas ===== */
+ul {
+    list-style: none;
+    margin: 14px 0 0;
+    padding: 0;
+}
+
+.person {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    border-top: 1px solid var(--linha);
+}
+
+.name {
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.phone {
+    font-size: 13px;
+    color: var(--apagado);
+}
+
+.remove {
+    min-width: 42px;
+    min-height: 42px;
+    font-size: 22px;
+    color: var(--apagado);
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.send {
+    padding: 14px 0;
+    border-top: 1px solid var(--linha);
+}
+
+.send:first-child {
+    border-top: 0;
+    padding-top: 0;
+}
+
+#send-list {
+    margin-top: 0;
+}
+
+.send-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.sent {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--whatsapp);
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+/* ===== Tela de revelar ===== */
+.reveal {
+    text-align: center;
+    padding: 28px 20px;
+}
+
+.gift {
+    font-size: 72px;
+    line-height: 1;
+    margin: 12px 0 4px;
+}
+
+.box {
+    margin: 20px 0 12px;
+    padding: 24px 12px;
+    background: #fff;
+    border: 2px dashed var(--dourado);
+    border-radius: 16px;
+}
+
+.box-label {
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--apagado);
+}
+
+.target {
+    margin: 4px 0 0;
+    font-family: "Mountains of Christmas", Georgia, serif;
+    font-size: clamp(40px, 13vw, 60px);
+    line-height: 1.1;
+    color: var(--vermelho);
+    overflow-wrap: anywhere;
+}
+
+/* ===== Neve ===== */
+.snow {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.flake {
+    position: absolute;
+    top: -20px;
+    color: #fff;
+    opacity: 0.7;
+}
+
+/* Telas estreitas: uma coluna só */
+@media (max-width: 380px) {
+    .row,
+    .actions {
+        grid-template-columns: 1fr;
+    }
+
+    .row input {
+        margin-bottom: 14px;
+    }
+}
+
+/* Animações só para quem não pediu movimento reduzido no sistema */
+@media (prefers-reduced-motion: no-preference) {
+    .flake {
+        animation: cair linear infinite;
+    }
+
+    .gift {
+        animation: balancar 2.4s ease-in-out infinite;
+    }
+
+    .box.show {
+        animation: aparecer 0.4s ease-out;
+    }
+
+    @keyframes cair {
+        to {
+            transform: translateY(110vh) translateX(30px);
+        }
+    }
+
+    @keyframes balancar {
+        0%, 100% { transform: rotate(-5deg); }
+        50% { transform: rotate(5deg); }
+    }
+
+    @keyframes aparecer {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: none; opacity: 1; }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .snow {
+        display: none;
+    }
+}

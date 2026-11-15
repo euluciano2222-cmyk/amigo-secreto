@@ -1,44 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amigo Secreto</title>
-<link rel="stylesheet" href="style.css"
-<script src="script.js" defer> </script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Amigo Secreto de Natal</title>
+  <meta name="description" content="Sorteio de amigo secreto de Natal com link individual para cada participante.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-    
-    <div class="wrap>"
-        <main id="view-setup">
-            <header>
-<p class="eyebrow">Natal em Família</p>
-<h1>Amigo Secreto</h1>
-<p class="sub">Cadastre o grupo, sorteie e mande um link secreto para cada pessoa.</p>
-            </header>
+  <!-- A neve é criada pelo script.js dentro desta div -->
+  <div class="snow" id="snow" aria-hidden="true"></div>
 
-            <section class="card">
-<label for="group">Nome do grupo</label>
-<input id="group" maxlength="40" placeholder="Ex.:Família Silva">
- </section>
+  <div class="wrap">
 
-<section class="card">
-    <h2>Participantes</h2>
-    <form id="add-form">
-        <label for="p-name">Nome</label>
-        <input id="p-name" maxlength="30" placeholder="Ex.: Luciana">
-        <label for="p-phone">WhatsApp com DDD (opcional)</label>
-        <input id="p-phone" inputmode="tel" aria-placeholder="Ex.: 11 91234-555">
-        <buton type="submit">Adicionar</buton>
-</form>
-<p id="add-msg" role="alert"></p>
-<ul id="people"></ul>
-</section>
+    <!-- TELA 1 (organizador): cadastrar o grupo -->
+    <main id="view-setup" hidden>
+      <header>
+        <p class="eyebrow">Natal em família</p>
+        <h1>Amigo Secreto</h1>
+        <p class="sub">Cadastre a família, sorteie e mande um link secreto para cada pessoa pelo WhatsApp.</p>
+      </header>
 
-        <buton id="draw" disable>Sortear</buton>
+      <div class="warn" id="file-warning" hidden>
+        Você abriu o arquivo direto do computador. Dá para testar, mas os links só funcionam para outras pessoas com o site publicado.
+      </div>
+
+      <section class="card">
+        <label for="group">Nome do grupo</label>
+        <input id="group" maxlength="40" placeholder="Ex.: Família Silva" autocomplete="off">
+        <div class="row">
+          <div>
+            <label for="value">Valor do presente <span class="hint">(opcional)</span></label>
+            <input id="value" maxlength="20" placeholder="Ex.: R$ 50" autocomplete="off">
+          </div>
+          <div>
+            <label for="date">Data da troca <span class="hint">(opcional)</span></label>
+            <input id="date" type="date">
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Participantes</h2>
+        <p class="muted">Mínimo de 3 pessoas. O WhatsApp é opcional.</p>
+        <form id="add-form" autocomplete="off">
+          <label for="p-name">Nome</label>
+          <input id="p-name" maxlength="30" placeholder="Ex.: Vanessa">
+          <label for="p-phone">WhatsApp com DDD <span class="hint">(opcional)</span></label>
+          <input id="p-phone" inputmode="tel" maxlength="20" placeholder="Ex.: 11 91234-5678">
+          <button class="btn outline" type="submit">Adicionar</button>
+        </form>
+        <p class="msg" id="add-msg" role="alert"></p>
+        <ul id="people"></ul>
+        <p class="muted" id="count"></p>
+      </section>
+
+      <button class="btn primary" id="draw" disabled>Sortear</button>
+      <p class="msg on-dark" id="draw-msg" role="alert"></p>
     </main>
-</div>     
-            
+
+    <!-- TELA 2 (organizador): enviar os links -->
+    <main id="view-send" hidden>
+      <header>
+        <p class="eyebrow">Sorteio feito</p>
+        <h1 id="send-title">Amigo Secreto</h1>
+        <p class="sub">Mande para cada pessoa o link dela. O resultado não aparece aqui, então você também pode participar.</p>
+      </header>
+
+      <section class="card">
+        <ul id="send-list"></ul>
+      </section>
+
+      <div class="warn">
+        Não sorteie de novo depois de enviar: um novo sorteio muda os resultados e os links antigos ficam errados.
+      </div>
+      <button class="btn danger" id="reset">Apagar e começar outro grupo</button>
+    </main>
+
+    <!-- TELA 3 (participante): revelar quem tirou -->
+    <main id="view-reveal" hidden>
+      <section class="card reveal">
+        <p class="eyebrow dark" id="r-group">Amigo Secreto</p>
+        <div class="gift" aria-hidden="true">🎁</div>
+        <h1 id="r-hello">Oi!</h1>
+        <p>Confira se ninguém está olhando a sua tela.</p>
+        <button class="btn primary" id="r-btn">Abrir o presente</button>
+        <div class="box" id="r-box" hidden>
+          <p class="box-label">Você tirou</p>
+          <p class="target" id="r-target"></p>
+        </div>
+        <p class="muted" id="r-details"></p>
+      </section>
+    </main>
+
+    <!-- Link quebrado -->
+    <main id="view-error" hidden>
+      <section class="card reveal">
+        <h1>Link inválido</h1>
+        <p>Este link está incompleto ou foi cortado. Peça para quem organizou reenviar.</p>
+      </section>
+    </main>
+
+  </div>
 </body>
 </html>
