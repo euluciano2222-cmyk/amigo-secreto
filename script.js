@@ -113,7 +113,7 @@ if (typeof document !== "undefined") (function () {
 
     const parts = [];
     if (d.v) parts.push("Valor do presente: " + d.v);
-    if (d.d) parts.push("Troca em " + formatDate(d.d));
+    if (d.d) parts.push("Dia do amigo secreto: " + formatDate(d.d));
     $("r-details").textContent = parts.join(" · ");
     document.title = "Amigo Secreto — " + d.n;
 

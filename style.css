@@ -135,6 +135,7 @@ input {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
+    align-items: end; /* alinha os campos por baixo, mesmo se um rótulo quebrar linha */
 }
 
 .row input {

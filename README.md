@@ -8,7 +8,7 @@ Site para organizar o amigo secreto da família: você cadastra os participantes
 
 ## Funcionalidades
 
-- Cadastro do grupo com nome, valor do presente e data da troca
+- Cadastro do grupo com nome, valor do presente e dia do amigo secreto
 - Sorteio em que cada pessoa tira exatamente uma outra e ninguém tira a si mesmo
 - Link individual por participante, com botão para enviar direto no WhatsApp
 - Tela de revelação que só mostra o nome depois de um toque
