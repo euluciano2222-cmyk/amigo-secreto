@@ -120,7 +120,8 @@ label {
     color: var(--apagado);
 }
 
-input {
+input,
+select {
     width: 100%;
     padding: 12px;
     margin-bottom: 14px;
@@ -138,12 +139,29 @@ input {
     align-items: end; /* alinha os campos por baixo, mesmo se um rótulo quebrar linha */
 }
 
-.row input {
+.row input,
+.row select {
     margin-bottom: 0;
+}
+
+.tip {
+    margin-top: -6px;
+}
+
+.tag {
+    display: inline-block;
+    margin-top: 2px;
+    padding: 1px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--verde);
+    background: #e3eee8;
+    border-radius: 999px;
 }
 
 /* Contorno visível para quem navega pelo teclado */
 input:focus-visible,
+select:focus-visible,
 button:focus-visible,
 a:focus-visible {
     outline: 3px solid var(--dourado);
@@ -360,7 +378,8 @@ ul {
         grid-template-columns: 1fr;
     }
 
-    .row input {
+    .row input,
+    .row select {
         margin-bottom: 14px;
     }
 }

@@ -59,12 +59,16 @@
 
       <section class="card">
         <h2>Participantes</h2>
-        <p class="muted">Mínimo de 3 pessoas. O WhatsApp é opcional.</p>
+        <p class="muted">Mínimo de 3 pessoas.</p>
         <form id="add-form" autocomplete="off">
           <label for="p-name">Nome</label>
           <input id="p-name" maxlength="30" placeholder="Ex.: Luciana">
           <label for="p-phone">WhatsApp com DDD <span class="hint">(opcional)</span></label>
           <input id="p-phone" inputmode="tel" maxlength="20" placeholder="Ex.: 11 91234-5678">
+          <label for="p-nucleo">Família / casa <span class="hint">(opcional)</span></label>
+          <input id="p-nucleo" list="nucleos" maxlength="30" placeholder="Ex.: Casa da Sogra">
+          <datalist id="nucleos"></datalist>
+          <p class="muted tip">Quem tiver a mesma família/casa não tira um ao outro (ex.: mãe e filhos).</p>
           <button class="btn outline" type="submit">Adicionar</button>
         </form>
         <p class="msg" id="add-msg" role="alert"></p>

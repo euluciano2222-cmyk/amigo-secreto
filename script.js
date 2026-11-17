@@ -3,34 +3,74 @@
    ========================================================= */
 
 // Número inteiro aleatório de 0 até n-1, usando o gerador seguro do navegador.
+// Os números aleatórios são pedidos em lotes de 1024, que é bem mais rápido.
+const lote = new Uint32Array(1024);
+let posLote = lote.length;
 function randInt(n) {
   const max = Math.floor(0xFFFFFFFF / n) * n;
-  const buf = new Uint32Array(1);
   let x;
   do {
-    crypto.getRandomValues(buf);
-    x = buf[0];
+    if (posLote === lote.length) { crypto.getRandomValues(lote); posLote = 0; }
+    x = lote[posLote++];
   } while (x >= max); // descarta a sobra para todos os números terem a mesma chance
   return x % n;
 }
 
 // O SORTEIO.
+// Recebe o número de pessoas (n) e a lista de restrições: pares [a, b]
+// que não podem se tirar (vale para os dois lados).
 // Devolve um array "to": a pessoa da posição i tirou a pessoa da posição to[i].
-// 1) monta [0, 1, 2, ...]  2) embaralha  3) se alguém caiu na própria posição
-// (tirou a si mesmo), embaralha de novo.
-// Como é um embaralhamento, cada pessoa aparece exatamente uma vez:
-// ninguém é tirado duas vezes e ninguém fica de fora.
-function drawPairs(n) {
+// Devolve null se as restrições tornam o sorteio impossível.
+function drawPairs(n, forbidden = []) {
   if (n < 3) throw new Error("mínimo de 3 participantes");
-  for (;;) {
+
+  // Tabela "pode[i][j]": a pessoa i pode tirar a pessoa j?
+  const pode = Array.from({ length: n }, (_, i) =>
+    Array.from({ length: n }, (_, j) => i !== j) // ninguém tira a si mesmo
+  );
+  forbidden.forEach(([a, b]) => { pode[a][b] = false; pode[b][a] = false; });
+
+  // Tentativa 1: embaralhar (Fisher-Yates) e conferir se respeita tudo.
+  // Repete até achar. Assim cada resultado válido tem a mesma chance.
+  for (let tentativa = 0; tentativa < 5000; tentativa++) {
     const to = Array.from({ length: n }, (_, i) => i);
-    // Embaralhamento de Fisher-Yates
     for (let i = n - 1; i > 0; i--) {
       const j = randInt(i + 1);
       [to[i], to[j]] = [to[j], to[i]];
     }
-    if (to.every((t, i) => t !== i)) return to;
+    if (to.every((t, i) => pode[i][t])) return to;
   }
+
+  // Tentativa 2: com muitas restrições, embaralhar pode demorar demais.
+  // Aqui usamos "emparelhamento" (algoritmo de Kuhn): cada pessoa procura
+  // alguém livre; se a pessoa desejada já foi tirada, tenta realocar quem a tirou.
+  // Se nem assim fechar, o sorteio é impossível com essas restrições.
+  const ordem = lista => {
+    const a = lista.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = randInt(i + 1);
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+  const tiradoPor = new Array(n).fill(-1);
+  function tentar(i, visitados) {
+    for (const j of ordem([...Array(n).keys()])) {
+      if (!pode[i][j] || visitados[j]) continue;
+      visitados[j] = true;
+      if (tiradoPor[j] === -1 || tentar(tiradoPor[j], visitados)) {
+        tiradoPor[j] = i;
+        return true;
+      }
+    }
+    return false;
+  }
+  for (const i of ordem([...Array(n).keys()])) {
+    if (!tentar(i, new Array(n).fill(false))) return null;
+  }
+  const to = new Array(n);
+  tiradoPor.forEach((i, j) => { to[i] = j; });
+  return to;
 }
 
 // Transforma um objeto em texto seguro para ir dentro de um link.
@@ -144,6 +184,12 @@ if (typeof document !== "undefined") (function () {
       name.className = "name";
       name.textContent = p.name;
       who.appendChild(name);
+      if (p.nucleo) {
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = p.nucleo;
+        who.appendChild(tag);
+      }
       if (p.phone) {
         const ph = document.createElement("div");
         ph.className = "phone";
@@ -160,6 +206,15 @@ if (typeof document !== "undefined") (function () {
 
       li.append(who, x);
       ul.appendChild(li);
+    });
+
+    // Sugere as famílias/casas já digitadas, para não ter que escrever de novo
+    const dl = $("nucleos");
+    dl.textContent = "";
+    [...new Set(state.people.map(p => p.nucleo).filter(Boolean))].forEach(nome => {
+      const opt = document.createElement("option");
+      opt.value = nome;
+      dl.appendChild(opt);
     });
 
     const n = state.people.length;
@@ -190,7 +245,12 @@ if (typeof document !== "undefined") (function () {
       return;
     }
 
-    state.people.push({ name, phone, sent: false });
+    // Mesma família escrita de jeitos diferentes ("casa da sogra", "Casa da Sogra") vira uma só
+    let nucleo = $("p-nucleo").value.trim().replace(/\s+/g, " ");
+    const igual = state.people.find(p => p.nucleo && p.nucleo.toLowerCase() === nucleo.toLowerCase());
+    if (igual) nucleo = igual.nucleo;
+
+    state.people.push({ name, phone, nucleo, sent: false });
     save();
     $("p-name").value = "";
     $("p-phone").value = "";
@@ -204,8 +264,18 @@ if (typeof document !== "undefined") (function () {
       $("group").focus();
       return;
     }
+    // Quem é da mesma família/casa não pode se tirar
+    const proibidos = [];
+    state.people.forEach((a, i) => state.people.forEach((b, j) => {
+      if (i < j && a.nucleo && a.nucleo === b.nucleo) proibidos.push([i, j]);
+    }));
+    const resultado = drawPairs(state.people.length, proibidos);
+    if (!resultado) {
+      $("draw-msg").textContent = "Não dá para sortear: uma família/casa tem gente demais em relação ao resto do grupo. Tire a família de alguém ou adicione mais pessoas.";
+      return;
+    }
     $("draw-msg").textContent = "";
-    state.drawn = drawPairs(state.people.length);
+    state.drawn = resultado;
     state.people.forEach(p => { p.sent = false; });
     save();
     renderSend();
